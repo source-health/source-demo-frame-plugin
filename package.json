@@ -1,0 +1,42 @@
+{
+  "//1": "describes your app and its dependencies",
+  "//2": "https://docs.npmjs.com/files/package.json",
+  "//3": "updating this file will download and update your packages",
+  "name": "typescript-base",
+  "version": "0.0.1",
+  "description": "Same Glitch Welcome application, with typescript set up for the backend",
+  "main": "build/server.js",
+  "scripts": {
+    "test": "echo 17dfg ",
+    "watch-server": "nodemon --watch 'src/**/*' -e ts,tsx --exec refresh",
+    "build": "tsc",
+    "start2": "npm run build && node build/server.js",
+    "start": "ts-node ./src/server.ts"
+  },
+  "dependencies": {
+    "@types/express": "^4.0.0",
+    "@types/koa": "^2.0.46",
+    "@types/koa-router": "^7.0.31",
+    "@types/node": "^10.9.4",
+    "@types/koa-bodyparser": "^5.0.1",
+    "express": "^4.15.2",
+    "koa": "^2.5.2",
+    "koa-bodyparser": "^4.2.1",
+    "koa-router": "^7.4.0",
+    "nodemon": "^1.18.4",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.0.3"
+  },
+  "engines": {
+    "node": "10.x"
+  },
+  "repository": {
+    "url": "https://github.com/arijitdasgupta/glitch-typescript-base"
+  },
+  "license": "MIT",
+  "keywords": [
+    "node",
+    "glitch",
+    "express"
+  ]
+}

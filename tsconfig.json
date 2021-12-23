@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "noImplicitAny": true,
+       "outDir": "build",
+        "removeComments": true,
+        "preserveConstEnums": true,
+      "types": ["node"],
+        "target": "es2017"
+    },
+    "include": [
+        "typings/main.d.ts",
+        "*.ts"
+    ],
+    "exclude": [
+        "node_modules",
+    ]
+}
