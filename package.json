@@ -7,7 +7,7 @@
   "description": "Example 'frame' plugin for Source Health",
   "main": "build/server.js",
   "scripts": {
-    "watch-server": "nodemon --watch 'src/**/*' -e ts,tsx --exec refresh",
+    "watch": "nodemon --watch 'src/**/*' -e ts,tsx --exec refresh",
     "build": "tsc",
     "start": "ts-node ./src/server.ts"
   },
