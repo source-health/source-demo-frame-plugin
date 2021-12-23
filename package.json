@@ -2,15 +2,13 @@
   "//1": "describes your app and its dependencies",
   "//2": "https://docs.npmjs.com/files/package.json",
   "//3": "updating this file will download and update your packages",
-  "name": "typescript-base",
+  "name": "source-plugin-example",
   "version": "0.0.1",
-  "description": "Same Glitch Welcome application, with typescript set up for the backend",
+  "description": "Example 'frame' plugin for Source Health",
   "main": "build/server.js",
   "scripts": {
-    "test": "echo 17dfg ",
     "watch-server": "nodemon --watch 'src/**/*' -e ts,tsx --exec refresh",
     "build": "tsc",
-    "start2": "npm run build && node build/server.js",
     "start": "ts-node ./src/server.ts"
   },
   "dependencies": {
@@ -19,24 +17,23 @@
     "@types/koa-router": "^7.0.31",
     "@types/node": "^10.9.4",
     "@types/koa-bodyparser": "^5.0.1",
-    "express": "^4.15.2",
+    "express": "^4.17.2",
     "koa": "^2.5.2",
     "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
-    "nodemon": "^1.18.4",
-    "ts-node": "^7.0.1",
-    "typescript": "^3.0.3"
+    "nodemon": "^2.0.15",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4"
   },
   "engines": {
-    "node": "10.x"
+    "node": "16.x"
   },
   "repository": {
-    "url": "https://github.com/arijitdasgupta/glitch-typescript-base"
+    "url": "https://github.com/source-health/source-plugin-example"
   },
   "license": "MIT",
   "keywords": [
-    "node",
-    "glitch",
-    "express"
+    "sourcehealth",
+    "plugin"
   ]
 }

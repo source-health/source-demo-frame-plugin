@@ -3,7 +3,7 @@ import * as Router from "koa-router";
 const app = new Koa();
 var router = new Router();
 
-router.post("/dialog", (ctx, next) => {
+router.get("/api/echo", (ctx, next) => {
  let fullthis = {
     "fulfillmentText": "its cool man ye"
 };
