@@ -6,23 +6,19 @@ simple frontend that can be loaded as an iframe within Source.
 
 # Local development
 
-Run the backend in dev mode, with hot-reloading
+Run the backend in watch mode:
 
 ```
-npm run backend:dev
+npm run backend:watch
 ```
 
-Build the frontend
+Build the frontend in watch mode:
 
 ```
-npm run frontend:build
+npm run frontend:watch
 ```
 
 Load the dummy parent app in a browser e.g. http://localhost:3000/parent.html
-
-TODO: hot-reload the frontend
-
-TODO: how to run both of these in glitch?
 
 ## Typescript on Glitch
 

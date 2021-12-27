@@ -7,12 +7,14 @@
   "description": "Example 'frame' plugin for Source Health",
   "main": "build/server.js",
   "scripts": {
+    "// Comment glitch:watch": "See README, this is a helper if you are editing within Glitch",
     "glitch:watch": "nodemon --watch 'src/**/*' -e ts,tsx --exec refresh",
     "backend:build": "tsc",
-    "backend:dev": "nodemon --watch 'src/**' --ext 'ts,json' --ignore 'src/**/*.test.ts' --exec 'ts-node src/server.ts'",
+    "backend:watch": "nodemon --watch 'src/**' --ext 'ts,json' --ignore 'src/**/*.test.ts' --ignore 'src/web' --exec 'ts-node src/server.ts'",
     "backend:start": "ts-node ./src/server.ts",
     "frontend:build": "webpack",
-    "// Comment": "The 'start' command is for glitch - build the frontend and start the backend server.",
+    "frontend:watch": "webpack --watch",
+    "// Comment start": "The 'start' command is for glitch - build the frontend and start the backend server.",
     "start": "npm run frontend:build && npm run backend:start"
   },
   "dependencies": {
