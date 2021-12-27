@@ -1,0 +1,65 @@
+<html>
+  <head>
+    <title>parent</title>
+    <script>
+      var iframeOrigin = "http://plugin.localho.st:3000";
+    </script>
+  </head>
+  <body>
+    <h1>Parent app</h1>
+    <div id='placeholder'></div>
+
+    <script>
+      var iframe = document.createElement('iframe');
+      iframe.id = 'iframe1';
+      iframe.src = iframeOrigin  + "/iframe.html";
+      iframe.width = "800px";
+      iframe.height = "400px";
+      iframe.sandbox = "allow-forms allow-popups allow-scripts allow-same-origin";
+      var container = document.querySelector('#placeholder');
+      container.appendChild(iframe);
+
+      var destination = iframe.contentWindow;
+
+
+      function createHelloResponse(messageId) {
+        return helloResponse = {
+          type: 'hello',
+          id: messageId,
+          context: {
+            member: 'mem_123',
+          },
+          auth: {
+            token: 'thisisasjwt',
+            application: 'app_123',
+            user: 'usr_123'
+          },
+        };
+      }
+      iframe.addEventListener("load", function(e) {
+        console.log("[parent] iframe load complete");
+      });
+
+
+      window.addEventListener("message", (event) => {
+        if (event.source === destination) {
+          if (event.origin !== iframeOrigin) {
+            console.warn("[parent] Ew, I don't trust this message", event);
+            return;
+          }
+          console.log("[parent] Received message from iframe1: " + event.data);
+          var message = JSON.parse(event.data);
+          if (message.type === 'hello') {
+            var response = createHelloResponse(message.id);
+            console.log("[parent] sending 'hello' response");
+            destination.postMessage(JSON.stringify(response), iframeOrigin);
+          } else if (message.type === 'complete') {
+            console.log("[parent] received 'complete' from iframe1");
+          }
+        }
+
+      })
+
+    </script>
+  </body>
+</html>

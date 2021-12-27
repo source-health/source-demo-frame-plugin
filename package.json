@@ -7,16 +7,20 @@
   "description": "Example 'frame' plugin for Source Health",
   "main": "build/server.js",
   "scripts": {
-    "watch": "nodemon --watch 'src/**/*' -e ts,tsx --exec refresh",
-    "build": "tsc",
-    "start": "ts-node ./src/server.ts"
+    "glitch:watch": "nodemon --watch 'src/**/*' -e ts,tsx --exec refresh",
+    "backend:build": "tsc",
+    "backend:dev": "nodemon --watch 'src/**' --ext 'ts,json' --ignore 'src/**/*.test.ts' --exec 'ts-node src/server.ts'",
+    "backend:start": "ts-node ./src/server.ts",
+    "frontend:build": "webpack",
+    "// Comment": "The 'start' command is for glitch - build the frontend and start the backend server.",
+    "start": "npm run frontend:build && npm run backend:start"
   },
   "dependencies": {
     "@types/express": "^4.0.0",
     "@types/koa": "^2.0.46",
+    "@types/koa-bodyparser": "^5.0.1",
     "@types/koa-router": "^7.0.31",
     "@types/node": "^10.9.4",
-    "@types/koa-bodyparser": "^5.0.1",
     "express": "^4.17.2",
     "koa": "^2.5.2",
     "koa-bodyparser": "^4.2.1",
@@ -35,5 +39,11 @@
   "keywords": [
     "sourcehealth",
     "plugin"
-  ]
+  ],
+  "devDependencies": {
+    "source-map-loader": "^3.0.0",
+    "ts-loader": "^9.2.6",
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1"
+  }
 }

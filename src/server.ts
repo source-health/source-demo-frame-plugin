@@ -1,19 +1,16 @@
-import * as Koa from "koa";
-import * as Router from "koa-router";
-const app = new Koa();
-var router = new Router();
+import express, { Request, Response } from "express";
 
-router.get("/api/echo", (ctx, next) => {
- let fullthis = {
-    "fulfillmentText": "its cool man ye"
-};
-  ctx.body = fullthis
+const app = express();
+const port = 3000;
+
+// Serve static files from public/
+app.use(express.static("public"));
+app.use(express.static("dist"));
+
+app.get("/", (req: Request, res: Response) => {
+  res.send("Hello world!");
 });
 
-router.get("/", (ctx, next) => {
-  ctx.body = { msg: "the whehe cool best" };
+app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
 });
-
-app.use(router.routes());
-
-app.listen(3000);

@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/web",
+    "strict": true,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "target": "es6",
+    "allowJs": true,
+    "moduleResolution": "node",
+    "module": "esnext",
+    "sourceMap": true,
+    "esModuleInterop": true
+  }
+}

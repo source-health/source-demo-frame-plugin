@@ -1,8 +1,11 @@
 {
     "compilerOptions": {
         "module": "commonjs",
+        "esModuleInterop": true,
+        "strict": true,
+        "strictNullChecks": true,
         "noImplicitAny": true,
-       "outDir": "build",
+        "outDir": "dist/server",
         "removeComments": true,
         "preserveConstEnums": true,
       "types": ["node"],
@@ -10,9 +13,10 @@
     },
     "include": [
         "typings/main.d.ts",
-        "*.ts"
+        "./src/**/*.ts"
     ],
     "exclude": [
         "node_modules",
+        "./src/web"
     ]
 }
