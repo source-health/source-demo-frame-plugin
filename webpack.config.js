@@ -2,7 +2,8 @@ module.exports = {
   mode: "development",
 
   entry: {
-    main: "./src/web/main.ts",
+    iframe: "./src/web/iframe.ts",
+    parent: "./src/web/parent.ts",
   },
 
   output: {
