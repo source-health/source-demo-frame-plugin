@@ -2,7 +2,13 @@
   <head>
     <title>parent</title>
     <script>
-      var iframeOrigin = "http://plugin.localho.st:3000";
+      // Default iframe base url is same as the parent, which works in Glitch
+      var iframeOrigin = window.location.protocol + "//" + window.location.host;
+      if (window.location.host === 'localhost:3000') {
+        // If the parent is loaded from localhost, we can use the localho.st trick
+        // to load the iframe from a different origin, to test cross-domain config.
+        iframeOrigin = "http://plugin.localho.st:3000";
+      }
     </script>
   </head>
   <body>
