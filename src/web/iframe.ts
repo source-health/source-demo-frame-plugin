@@ -1,44 +1,24 @@
-function init() {
+import { SourceBridge } from './sourcebridge/SourceBridge'
+
+async function init() {
   console.log('Hello world, this is the iframe app')
-  var hello = {
-    type: 'hello',
-    id: '123',
-  }
+  await SourceBridge.init()
 
-  function sendComplete() {
-    var complete = {
-      type: 'complete',
-      id: '456',
-    }
-    parent.postMessage(JSON.stringify(complete), '*')
-  }
-
-  window.addEventListener('load', () => {
-    console.log('[iframe] I am loaded')
-    console.log("[iframe] sending 'hello' message to parent")
-    parent.postMessage(JSON.stringify(hello), '*')
-  })
-
-  window.addEventListener('message', (event) => {
+  await SourceBridge.onContextUpdate(async (context) => {
     var contentDiv = document.querySelector('#content')
     if (!contentDiv) {
       console.error('Could not find #content div')
       return
     }
-    if (event.source === parent) {
-      console.log('[iframe] Message was from parent: ' + event.data)
-      var message = JSON.parse(event.data)
-      if (message.type === 'hello') {
-        contentDiv.innerHTML = `Context: ${JSON.stringify(
-          message.context,
-        )}<br>Auth: ${JSON.stringify(message.auth)}`
-      }
-      // Here's where we would hit the customer's API to load some data
-      // Then send the 'I am fully loaded' message
-      setTimeout(sendComplete, 500)
-    } else {
-      console.warn('Received message from non-parent')
-    }
+    contentDiv.innerHTML = `Context: ${JSON.stringify(context)}<br>Auth: ${JSON.stringify(
+      SourceBridge.currentToken(),
+    )}`
+
+    // Simulate hitting our backend by sleeping
+    setTimeout(() => {
+      console.log('[iframe] calling ready()')
+      SourceBridge.ready()
+    }, 500)
   })
 }
 

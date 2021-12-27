@@ -1,3 +1,5 @@
+import { generateRequestId } from './sourcebridge/generateRequestId'
+
 interface Context {
   member?: string
 }
@@ -6,26 +8,59 @@ interface Auth {
   token: string
   application: string
   user: string
+  expires_at: Date
 }
 
 interface HelloResponse {
   type: 'hello'
   id: string
-  context: Context
-  auth: Auth
+  in_reply_to: string
+  ok: boolean
+  payload: {
+    context: Context
+    auth: Auth
+  }
+}
+
+interface AuthEvent {
+  type: 'authentication'
+  id: string
+  payload: {
+    auth: Auth
+  }
 }
 
 function createHelloResponse(messageId: string): HelloResponse {
   return {
     type: 'hello',
-    id: messageId,
-    context: {
-      member: 'mem_123',
+    id: generateRequestId(),
+    in_reply_to: messageId,
+    ok: true,
+    payload: {
+      context: {
+        member: 'mem_123',
+      },
+      auth: {
+        token: 'thisisajwt',
+        application: 'app_123',
+        user: 'usr_123',
+        expires_at: new Date(new Date().getTime() + 10_000),
+      },
     },
-    auth: {
-      token: 'thisisasjwt',
-      application: 'app_123',
-      user: 'usr_123',
+  }
+}
+
+function createAuthEvent(): AuthEvent {
+  return {
+    type: 'authentication',
+    id: generateRequestId(),
+    payload: {
+      auth: {
+        token: 'thisisajwt',
+        application: 'app_123',
+        user: 'usr_123',
+        expires_at: new Date(new Date().getTime() + 10_000),
+      },
     },
   }
 }
@@ -80,6 +115,16 @@ export function init() {
       }
     }
   })
+
+  setInterval(() => {
+    if (!destination) {
+      console.error('Could not find iframe window handle')
+      return
+    }
+
+    const event = createAuthEvent()
+    destination.postMessage(JSON.stringify(event), iframeOrigin)
+  }, 10000)
 }
 
 init()
