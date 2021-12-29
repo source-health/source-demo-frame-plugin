@@ -1,14 +1,19 @@
 import { generateRequestId } from './sourcebridge/generateRequestId'
 
+const APPLICATION_ID = 'app_123' // matches the server's dummy config
+
 interface Context {
   member?: string
 }
-
 interface Auth {
   token: string
-  application: string
-  user: string
   expires_at: Date
+}
+
+interface PluginInfo {
+  application: string
+  view_key: string
+  surface: string
 }
 
 interface HelloResponse {
@@ -19,18 +24,17 @@ interface HelloResponse {
   payload: {
     context: Context
     auth: Auth
+    plugin_info: PluginInfo
   }
 }
 
 interface AuthEvent {
   type: 'authentication'
   id: string
-  payload: {
-    auth: Auth
-  }
+  payload: Auth
 }
 
-function createHelloResponse(messageId: string): HelloResponse {
+async function createHelloResponse(messageId: string): Promise<HelloResponse> {
   return {
     type: 'hello',
     id: generateRequestId(),
@@ -40,32 +44,34 @@ function createHelloResponse(messageId: string): HelloResponse {
       context: {
         member: 'mem_123',
       },
-      auth: {
-        token: 'thisisajwt',
-        application: 'app_123',
-        user: 'usr_123',
-        expires_at: new Date(new Date().getTime() + 10_000),
+      auth: await authPayload(),
+      plugin_info: {
+        application: config.applicationId,
+        view_key: 'summary',
+        surface: 'main_tab',
       },
     },
   }
 }
 
-function createAuthEvent(): AuthEvent {
+async function createAuthEvent(): Promise<AuthEvent> {
   return {
     type: 'authentication',
     id: generateRequestId(),
-    payload: {
-      auth: {
-        token: 'thisisajwt',
-        application: 'app_123',
-        user: 'usr_123',
-        expires_at: new Date(new Date().getTime() + 10_000),
-      },
-    },
+    payload: await authPayload(),
   }
 }
 
-export function init() {
+async function authPayload(): Promise<Auth> {
+  const response = await fetch('/token')
+  const token = await response.json()
+  return {
+    token: token.token,
+    expires_at: token.expires_at,
+  }
+}
+
+async function init() {
   console.log('Hello world, this is the parent app')
   // Default iframe base url is same as the parent, which works in Glitch
   var iframeOrigin = window.location.protocol + '//' + window.location.host
@@ -94,7 +100,7 @@ export function init() {
     console.log('[parent] iframe load complete')
   })
 
-  window.addEventListener('message', (event) => {
+  window.addEventListener('message', async (event) => {
     if (!destination) {
       console.error('Could not find iframe window handle')
       return
@@ -107,7 +113,7 @@ export function init() {
       console.log('[parent] Received message from iframe1: ' + event.data)
       var message = JSON.parse(event.data)
       if (message.type === 'hello') {
-        var response = createHelloResponse(message.id)
+        var response = await createHelloResponse(message.id)
         console.log("[parent] sending 'hello' response")
         destination.postMessage(JSON.stringify(response), iframeOrigin)
       } else if (message.type === 'complete') {
@@ -116,15 +122,15 @@ export function init() {
     }
   })
 
-  setInterval(() => {
+  setInterval(async () => {
     if (!destination) {
       console.error('Could not find iframe window handle')
       return
     }
 
-    const event = createAuthEvent()
+    const event = await createAuthEvent()
     destination.postMessage(JSON.stringify(event), iframeOrigin)
   }, 10000)
 }
 
-init()
+void init()

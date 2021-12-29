@@ -5,6 +5,7 @@ import {
   ContextEvent,
   ContextPayload,
   HelloResponse,
+  PluginInfoPayload,
 } from './Messages'
 import { SourceBridgeClient } from './SourceBridgeClient'
 
@@ -14,9 +15,13 @@ export interface Context {
 
 export interface Auth {
   token: string
+  expiresAt: Date
+}
+
+export interface PluginInfo {
   application: string
   viewKey: string
-  expiresAt: Date
+  surface: string
 }
 
 type OnContextFn = (context: Context) => Promise<void>
@@ -26,12 +31,13 @@ class SourceBridgeAPI {
   private onContextCallbacks: OnContextFn[] = []
   private auth?: Auth
   private context?: Context
+  private pluginInfo?: PluginInfo
 
   constructor() {
     this.client = new SourceBridgeClient()
   }
 
-  public async init(): Promise<void> {
+  public async init(): Promise<PluginInfo> {
     console.log('[SourceBridge] initializing')
     const response = await this.client.sendRequest<HelloResponse>({
       type: 'hello',
@@ -41,6 +47,7 @@ class SourceBridgeAPI {
     // Call the context callback with the initial context
     await this.handleNewContext(response.payload.context)
     this.handleNewAuth(response.payload.auth)
+    const info = this.handlePluginInfo(response.payload.plugin_info)
 
     // Subscribe to any further context events
     this.client.onEvent('context', async (envelope) => {
@@ -54,7 +61,7 @@ class SourceBridgeAPI {
     })
 
     console.log(`[SourceBridge] Initialized with ${JSON.stringify(response)}`)
-    return
+    return info
   }
 
   public ready(): void {
@@ -73,13 +80,20 @@ class SourceBridgeAPI {
     return this.auth
   }
 
-  public currentContext(): Auth {
-    if (!this.auth) {
+  public currentContext(): Context {
+    if (!this.context) {
       throw new Error(
         'SourceBridge is not yet initialized. Please call `init()` before currentContext()',
       )
     }
-    return this.auth
+    return this.context
+  }
+
+  public info(): PluginInfo {
+    if (!this.pluginInfo) {
+      throw new Error('SourceBridge is not yet initialized. Please call `init()` before info()')
+    }
+    return this.pluginInfo
   }
 
   public async onContextUpdate(callback: OnContextFn): Promise<void> {
@@ -94,17 +108,25 @@ class SourceBridgeAPI {
   private async handleNewContext(context: ContextPayload): Promise<void> {
     console.log('[SourceBridge] handling new context', context)
     this.context = context
-    await Promise.all(this.onContextCallbacks.map((callback) => callback(context)))
+    await Promise.allSettled(this.onContextCallbacks.map((callback) => callback(context)))
   }
 
   private handleNewAuth(auth: AuthPayload): void {
     console.log('[SourceBridge] handling new auth', auth)
     this.auth = {
-      application: auth.application,
       token: auth.token,
-      viewKey: auth.view_key,
       expiresAt: new Date(auth.expires_at),
     }
+  }
+
+  private handlePluginInfo(info: PluginInfoPayload): PluginInfo {
+    const mapped = {
+      application: info.application,
+      viewKey: info.view_key,
+      surface: info.surface,
+    }
+    this.pluginInfo = mapped
+    return mapped
   }
 }
 

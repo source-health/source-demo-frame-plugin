@@ -21,14 +21,19 @@ export interface ContextPayload {
 
 export interface AuthPayload {
   token: string
+  expires_at: string
+}
+
+export interface PluginInfoPayload {
   application: string
   view_key: string
-  expires_at: string
+  surface: string
 }
 
 interface HelloPayload {
   context: ContextPayload
   auth: AuthPayload
+  plugin_info: PluginInfoPayload
 }
 
 export type HelloResponse = Response<'hello', HelloPayload>
