@@ -12,16 +12,17 @@ async function callEcho(): Promise<void> {
     return
   }
 
+  const token = await SourceBridge.currentToken()
   // Here we assume that the backend API is on the same domain as the iframe
   // This could be separate with an appropriate CORS policy on the API.
   const response = await fetch(`/api/echo`, {
     headers: {
-      Authorization: `Bearer ${SourceBridge.currentToken().token}`,
+      Authorization: `Bearer ${token.token}`,
     },
   })
-  const token = await response.json()
+  const data = await response.json()
   contentDiv.innerHTML = `Result of our API verifying the JWT:<br><pre>${JSON.stringify(
-    token,
+    data,
     null,
     2,
   )}</pre>`

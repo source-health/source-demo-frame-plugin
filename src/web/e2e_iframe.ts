@@ -56,7 +56,7 @@ async function init() {
     replaceContent({
       info: SourceBridge.info(),
       context,
-      token: SourceBridge.currentToken(),
+      token: await SourceBridge.currentToken(),
     })
 
     if (readyDelay) {
