@@ -25,10 +25,10 @@ Load the dummy parent app in a browser e.g. http://localhost:3000/parent.html
 As you can see from package.json, we have defined our `npm run start` script to
 do the following:
 
-1. Build the frontend
+1. Build the frontend, then
 2. Start the backend server with `ts-node`.
 
-This will delay waking up the sleeping app, but it works well enough for a demo like this.
+This will delay waking up the sleeping Glitch app, but it works well enough for a demo like this.
 
 ### Editing in Glitch
 
