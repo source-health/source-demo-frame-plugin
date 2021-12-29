@@ -19,7 +19,8 @@ app.get('/', (req: Request, res: Response) => {
   <html><body>
   <ul>
   <li><a href='parent.html'>parent.html</a> (loads demo iframe)</li>
-  <li><a href='parent.html?e2e'>parent.html?e2e</a> (loads e2e iframe)</li>
+  <li><a href='parent.html?e2e'>parent.html with e2e iframe</a></li>
+  <li><a href='parent.html?e2e&initDelay=5000'>parent.html with e2e iframe and init delay</a></li>
   <li><a href='iframe.html'>iframe.html</a> (doesn't do anything)</li>
   <li><a href='e2e_iframe.html'>e2e_iframe.html</a> (used by Source E2E tests)</li>
   </body></html>
