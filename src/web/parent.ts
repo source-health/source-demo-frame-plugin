@@ -46,7 +46,7 @@ async function createHelloResponse(messageId: string): Promise<HelloResponse> {
       },
       auth: await authPayload(),
       plugin_info: {
-        application: config.applicationId,
+        application: APPLICATION_ID,
         view_key: 'summary',
         surface: 'main_tab',
       },
