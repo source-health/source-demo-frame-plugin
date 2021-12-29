@@ -43,11 +43,10 @@ class SourceBridgeAPI {
       type: 'hello',
       id: generateRequestId(),
     })
-
-    // Call the context callback with the initial context
-    await this.handleNewContext(response.payload.context)
     this.handleNewAuth(response.payload.auth)
     const info = this.handlePluginInfo(response.payload.plugin_info)
+    // Call the context callback with the initial context
+    await this.handleNewContext(response.payload.context)
 
     // Subscribe to any further context events
     this.client.onEvent('context', async (envelope) => {
