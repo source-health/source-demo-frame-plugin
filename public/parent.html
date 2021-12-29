@@ -6,6 +6,37 @@
     <h1>Parent window</h1>
     <div id='placeholder'></div>
     <script type='application/javascript' src='web/parent.bundle.js'></script>
+    <h2>About</h2>
+    <p>This parent.html loads iframe.html and emulates the Source application,
+      responding to the initial 'hello' message, and passing context and tokens
+      to the iframe.</p>
 
+    <p>The iframe.html file, when loaded as an iframe by parent.html, demonstrates how
+    a frame plugin works within the Source web application.  The plugin
+    javascript does the following:
+
+      <ol>
+        <li>
+          Subscribe to context updates from the parent window, which will
+          trigger us to call a demo backend.
+        </li>
+        <li>
+          Call <code>SourceBridge.init()</code> to kick off the required
+          handshake with the parent window.
+        </li>
+        <li>
+          When we have received context, we call into a demo backend and display
+          the response in the div above.
+        </li>
+      </ol>
+      The demo backend (in this same codebase) has two functions:
+      <ol>
+        <li>Dispense a Source application token to the parent window.</li>
+        <li>
+          Handle a request from the iframe with the application token, verify
+          the token, and echo the claims of the token.
+        </li>
+      </ol>
+    </p>
   </body>
 </html>

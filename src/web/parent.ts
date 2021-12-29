@@ -72,7 +72,6 @@ async function authPayload(): Promise<Auth> {
 }
 
 async function init() {
-  console.log('Hello world, this is the parent app')
   // Default iframe base url is same as the parent, which works in Glitch
   var iframeOrigin = window.location.protocol + '//' + window.location.host
   if (window.location.host === 'localhost:3000') {
@@ -81,10 +80,22 @@ async function init() {
     iframeOrigin = 'http://plugin.localho.st:3000'
   }
 
+  // Load the 'e2e' iframe if ?e2e query param is present
+  const urlParams = new URLSearchParams(window.location.search)
+  var iframeUrl = new URL(iframeOrigin + '/iframe.html')
+
+  if (urlParams.get('e2e') !== null) {
+    iframeUrl = new URL(iframeOrigin + '/e2e_iframe.html')
+    // Pass through the query params
+    for (const entry of urlParams.entries()) {
+      iframeUrl.searchParams.append(entry[0], entry[1])
+    }
+  }
+
   var iframe = document.createElement('iframe')
   iframe.id = 'iframe1'
-  iframe.src = iframeOrigin + '/iframe.html'
-  iframe.width = '800px'
+  iframe.src = iframeUrl.href
+  iframe.width = '100%'
   iframe.height = '400px'
   iframe.sandbox.add('allow-forms', 'allow-popups', 'allow-scripts', 'allow-same-origin')
   var container = document.querySelector('#placeholder')
@@ -97,7 +108,7 @@ async function init() {
   var destination = iframe.contentWindow
 
   iframe.addEventListener('load', function (e) {
-    console.log('[parent] iframe load complete')
+    console.log('[parent] iframe load complete', iframeUrl.href)
   })
 
   window.addEventListener('message', async (event) => {

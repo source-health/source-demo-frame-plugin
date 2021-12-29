@@ -1,5 +1,10 @@
 import { SourceBridge } from './sourcebridge/SourceBridge'
 
+/**
+ * The main script bundle for 'iframe.html', which is a demo plugin that runs within
+ * parent.html and hits the demo backend inside this codebase
+ */
+
 async function callEcho(): Promise<void> {
   var contentDiv = document.querySelector('#content')
   if (!contentDiv) {
@@ -23,22 +28,23 @@ async function callEcho(): Promise<void> {
 }
 
 async function init() {
-  console.log('Hello world, this is the iframe app')
-
-  // Note - ideally we'd be calling this after the update subscription
-  await SourceBridge.init()
-
+  // Subscribe to context updates from the parent window:w
   await SourceBridge.onContextUpdate(async (context) => {
+    // Hit the demo backend with the token provided by the parent window
     await callEcho()
 
-    console.log('[iframe] calling ready()')
     // Call ready() to clear the loading state for the plugin
     SourceBridge.ready()
 
+    // Ongoing: keep calling the demo backend with the token that should be refreshed automatically
     setInterval(async () => {
       callEcho()
     }, 2_000)
   })
+
+  console.log('[iframe] calling init()')
+  // Kick off the handshake (which will lead to the context update callback being called)
+  await SourceBridge.init()
 }
 
 init()

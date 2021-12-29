@@ -4,6 +4,16 @@ This is an example iframe plugin for Source Health. It contains a simple node
 backend that can parse and verify the Source application tokens (JWTs) and a
 simple frontend that can be loaded as an iframe within Source.
 
+## How to use
+
+1. Load `/parent.html` and it will load a demo iframe that hits our demo API
+   with a valid Source application token.
+2. Load `/parent.html?e2e` to load the e2e test iframe instead of the demo iframe.
+3. Load `e2e_iframe.html` as a Source plugin in Source and it will perform the
+   handshake protocol and display the results.
+4. Load `e2e_iframe.html?initDelay=1000&readyDelay=1000` to force delays before the
+   init() and ready() calls. This is useful to Source for testing timeouts and errors.
+
 # Local development
 
 Run the backend in watch mode:

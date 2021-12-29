@@ -1,24 +1,25 @@
 module.exports = {
-  mode: "development",
+  mode: 'development',
 
   entry: {
-    iframe: "./src/web/iframe.ts",
-    parent: "./src/web/parent.ts",
+    iframe: './src/web/iframe.ts',
+    e2e_iframe: './src/web/e2e_iframe.ts',
+    parent: './src/web/parent.ts',
   },
 
   output: {
-    filename: "[name].bundle.js",
-    chunkFilename: "[name].chunk.js",
-    path: __dirname + "/dist/web",
-    publicPath: "/assets/",
+    filename: '[name].bundle.js',
+    chunkFilename: '[name].chunk.js',
+    path: __dirname + '/dist/web',
+    publicPath: '/assets/',
   },
 
   // Enable sourcemaps for debugging webpack's output.
-  devtool: "source-map",
+  devtool: 'source-map',
 
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: [".ts", ".js"],
+    extensions: ['.ts', '.js'],
   },
 
   module: {
@@ -26,19 +27,19 @@ module.exports = {
       // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
       {
         test: /\.tsx?$/,
-        loader: "ts-loader",
-        options: { configFile: "tsconfig.web.json" },
+        loader: 'ts-loader',
+        options: { configFile: 'tsconfig.web.json' },
       },
 
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-      { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
+      { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
     ],
   },
 
   optimization: {
     splitChunks: {
-      chunks: "all",
+      chunks: 'all',
     },
     usedExports: true,
   },
-};
+}
