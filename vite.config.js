@@ -17,9 +17,6 @@ export default defineConfig({
   server: {
     port: 3001,
     strictPort: true,
-    hmr: {
-      port: 443, // Run the websocket server on the SSL port
-    },
     // Proxy API calls to the demo backend on port 3000
     proxy: {
       '/api': {
