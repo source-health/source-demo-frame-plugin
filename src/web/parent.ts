@@ -63,7 +63,7 @@ async function createAuthEvent(): Promise<AuthEvent> {
 }
 
 async function authPayload(): Promise<Auth> {
-  const response = await fetch('/token')
+  const response = await fetch('/api/token')
   const token = await response.json()
   return {
     token: token.token,

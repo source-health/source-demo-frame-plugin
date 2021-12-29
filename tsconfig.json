@@ -8,8 +8,8 @@
         "outDir": "dist/server",
         "removeComments": true,
         "preserveConstEnums": true,
-      "types": ["node"],
-        "target": "es2017"
+        "types": ["node"],
+        "target": "es2020"
     },
     "include": [
         "typings/main.d.ts",
@@ -17,6 +17,5 @@
     ],
     "exclude": [
         "node_modules",
-        "./src/web"
     ]
 }

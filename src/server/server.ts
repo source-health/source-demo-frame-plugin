@@ -3,29 +3,19 @@ import { config } from './config'
 import { createUserJwt } from './createUserJwt'
 import { decodeSourceApplicationToken } from './decodeSourceApplicationToken'
 import { parseAuthorizationHeader } from './parseAuthorizationHeader'
+import * as path from 'path'
 
 const app = express()
 const port = 3000
 
 const USER_ID = 'usr_123'
 
-// Serve static files from public/
-app.use(express.static('public'))
-app.use(express.static('dist'))
+// Serve vite-built html & assets from 'dist'
+app.use(express.static('dist/web'))
 app.use(express.json())
 
-app.get('/', (req: Request, res: Response) => {
-  const html = `
-  <html><body>
-  <ul>
-  <li><a href='parent.html'>parent.html</a> (loads demo iframe)</li>
-  <li><a href='parent.html?e2e'>parent.html with e2e iframe</a></li>
-  <li><a href='parent.html?e2e&initDelay=5000'>parent.html with e2e iframe and init delay</a></li>
-  <li><a href='iframe.html'>iframe.html</a> (doesn't do anything)</li>
-  <li><a href='e2e_iframe.html'>e2e_iframe.html</a> (used by Source E2E tests)</li>
-  </body></html>
-  `
-  res.send(html)
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, '../../index.html'))
 })
 
 /**
@@ -33,7 +23,7 @@ app.get('/', (req: Request, res: Response) => {
  * Source 'parent' window to load. In the real API this requires user authentication, but in this dummy
  * version we hand out a token for a fixed user ID.
  */
-app.get('/token', async (req: Request, res: Response) => {
+app.get('/api/token', async (req: Request, res: Response) => {
   const token = await createUserJwt({
     keyId: config.applicationId,
     userId: USER_ID,
@@ -55,7 +45,7 @@ app.get('/token', async (req: Request, res: Response) => {
  * Here the token is passed as a bearer token in the Authorization header, but the customer is free
  * to send that token via any means.
  */
-app.get('/echo', async (req: Request, res: Response) => {
+app.get('/api/echo', async (req: Request, res: Response) => {
   const token = parseAuthorizationHeader(req.header('Authorization'))
   if (!token) {
     console.warn('Invalid Authorization header (should be a Bearer token')

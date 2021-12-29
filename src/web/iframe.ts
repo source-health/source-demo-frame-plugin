@@ -14,7 +14,7 @@ async function callEcho(): Promise<void> {
 
   // Here we assume that the backend API is on the same domain as the iframe
   // This could be separate with an appropriate CORS policy on the API.
-  const response = await fetch(`/echo`, {
+  const response = await fetch(`/api/echo`, {
     headers: {
       Authorization: `Bearer ${SourceBridge.currentToken().token}`,
     },
