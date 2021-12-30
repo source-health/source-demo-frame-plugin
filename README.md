@@ -1,20 +1,74 @@
 # Source Example Frame Plugin
 
-This is an example iframe plugin for Source Health. It contains a simple node
-backend that can parse and verify the Source application tokens (JWTs) and a
-simple frontend that can be loaded as an iframe within Source.
+This is an demonstration of how to write an iframe plugin for Source Health. In
+this project we have two simple iframe html files with accompanying Typescript
+scripts:
 
-## How to use
+1. demo_plugin.html - this performs the SourceBridge handshake and displays the
+   context and application token it has received from the parent window.
+2. backend_demo_plugin.html - this takes the Source application token and
+   submits it to a simple demo backend API which verifies the token and returns the
+   details from it which are then displayed in the iframe. (This plugin cannot be configured as a 'real' Source plugin because the backend uses a hard-coded application public key.)
 
-1. Load `/parent.html` and it will load a demo iframe that hits our demo API
-   with a valid Source application token.
-2. Load `/parent.html?e2e` to load the e2e test iframe instead of the demo iframe.
-3. Load `e2e_iframe.html` as a Source plugin in Source and it will perform the
-   handshake protocol and display the results.
-4. Load `e2e_iframe.html?initDelay=1000&readyDelay=1000` to force delays before the
-   init() and ready() calls. This is useful to Source for testing timeouts and errors.
+We have also included an html file (parent.html) that simulates the Source web
+application allowing us to do some local development and demonstration without
+having to configure a plugin in Source itself.
+
+The main repository for this demo is https://github.com/source-health/source-demo-frame-plugin
+
+# How to use
+
+Source has created a [Glitch
+app](https://glitch.com/edit/#!/source-demo-frame-plugin) that can be accessed
+and freely remixed to get you started with building a Source plugin. This repo can also be cloned and run locally too.
+
+## Glitch App
+
+### See the demo plugin in the fake 'parent' app
+
+Load https://source-demo-frame-plugin.glitch.me/demo.html
+
+### Setup the demo plugin in your Source account
+
+1. Configure a Source application with a view like:
+
+```
+{
+  surface: 'main_tab',
+  type: 'frame',
+  key: 'demo',
+  label: 'Demo Plugin',
+  frame_url: 'https://source-demo-frame-plugin.glitch.me/demo_plugin.html'
+}
+```
+
+2. Reload the Source web application.
+3. Visit a member chart
+4. Click on the 'Demo Plugin' chart
+5. You should see the demo iframe content, which will look like this:
+   ![Demo plugin screenshot](./screenshots/demo_plugin.png)
+   This indicates that the plugin was able to successfully complete the handshake via SourceBridge, and has received the context and authentication token it needs.
 
 # Local development
+
+## Simple Demo
+
+There is no backend for the simple demo plugin, you can run the frontend build in dev mode:
+
+```
+npm run frontend:watch
+```
+
+Load the demo app at http://localhost:3001/demo.html
+
+## Backend Demo
+
+The backend demo has a simple Express API that has a hardcoded key pair for signing and verifying Source application tokens. It has two endpoints:
+
+- `/api/token` - simulates the Source backend API which provides application
+  tokens to authenticated users. This demo has no authentication.a
+- `/api/echo` - will decode and verify the Source application token, returning the
+  user ID and application ID back to the iframe plugin.
 
 Run the backend in watch mode:
 
@@ -28,17 +82,20 @@ Build the frontend in watch mode:
 npm run frontend:watch
 ```
 
-Load the dummy parent app in a browser e.g. http://localhost:3000/parent.html
+Load the dummy parent app in a browser e.g. http://localhost:3001/backend_demo.html
+
+# Notes
 
 ## Typescript on Glitch
 
 As you can see from package.json, we have defined our `npm run start` script to
 do the following:
 
-1. Build the frontend, then
+1. Build the frontend (with vite), then
 2. Start the backend server with `ts-node`.
 
-This will delay waking up the sleeping Glitch app, but it works well enough for a demo like this.
+This makes the application fairly slow to wake up or refresh but is tolerable
+for a demo.
 
 ### Editing in Glitch
 
