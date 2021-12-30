@@ -1,6 +1,12 @@
 import { generateRequestId } from './sourcebridge/generateRequestId'
 
-const APPLICATION_ID = 'app_123' // matches the server's dummy config
+/**
+ * This is a testing / demo scaffold that simulates the Source web application
+ * loading an iframe plugin. It's super hacky and hard-coded, but it is just enough
+ * to get an iframe plugin bootstrapped and communicating over the SourceBridge API.
+ */
+
+const APPLICATION_ID = 'app_123' // matches the demo server's dummy config
 
 interface Context {
   member?: string
@@ -71,25 +77,26 @@ async function authPayload(): Promise<Auth> {
   }
 }
 
-async function init() {
-  // Default iframe base url is same as the parent, which works in Glitch
-  var iframeOrigin = window.location.protocol + '//' + window.location.host
-  if (window.location.host === 'localhost:3000') {
-    // If the parent is loaded from localhost, we can use the localho.st trick
-    // to load the iframe from a different origin, to test cross-domain config.
-    iframeOrigin = 'http://plugin.localho.st:3000'
+export async function init() {
+  var iframeHtml = '/demo_plugin.html'
+  if (window.location.href.includes('backend')) {
+    iframeHtml = '/backend_demo_plugin.html'
   }
 
-  // Load the 'e2e' iframe if ?e2e query param is present
-  const urlParams = new URLSearchParams(window.location.search)
-  var iframeUrl = new URL(iframeOrigin + '/iframe.html')
+  // Default iframe base url is same as the parent, which works in Glitch
+  var iframeOrigin = window.location.protocol + '//' + window.location.host
+  if (window.location.host === 'localhost:3001') {
+    // If the parent is loaded from localhost, we can use the localho.st trick
+    // to load the iframe from a different origin, to test cross-domain config.
+    iframeOrigin = 'http://plugin.localho.st:3001'
+  }
 
-  if (urlParams.get('e2e') !== null) {
-    iframeUrl = new URL(iframeOrigin + '/e2e_iframe.html')
-    // Pass through the query params
-    for (const entry of urlParams.entries()) {
-      iframeUrl.searchParams.append(entry[0], entry[1])
-    }
+  var iframeUrl = new URL(iframeOrigin + iframeHtml)
+
+  // Pass through the query params
+  const urlParams = new URLSearchParams(window.location.search)
+  for (const entry of urlParams.entries()) {
+    iframeUrl.searchParams.append(entry[0], entry[1])
   }
 
   var iframe = document.createElement('iframe')
@@ -144,4 +151,4 @@ async function init() {
   }, 10000)
 }
 
-void init()
+init()

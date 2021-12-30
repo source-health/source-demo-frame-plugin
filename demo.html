@@ -1,0 +1,36 @@
+<html>
+
+<head>
+  <title>Source Simple Demo</title>
+</head>
+
+<body>
+  <h1>Source Simple Plugin Demo</h1>
+  <div id='placeholder'></div>
+
+  <h2>About</h2>
+  <p>
+    This is a simple demo/testing scaffold that loads demo_plugin.html and
+    emulates the Source application, responding to the initial 'hello' message,
+    and passing context and tokens to the iframe.</p>
+
+  <p>The demo_plugin.html file demonstrates how a frame plugin works within the
+    Source web application. The plugin
+    javascript does the following:
+
+  <ol>
+    <li>
+      Subscribe to context updates from the parent window, which will cause
+      the context received to be displayed in the iframe.
+    </li>
+    <li>
+      Call <code>SourceBridge.init()</code> to kick off the required
+      handshake with the parent window.
+    </li>
+  </ol>
+  </p>
+
+  <script type='module' src='./src/web/parent.ts'></script>
+</body>
+
+</html>

@@ -1,12 +1,20 @@
 <html>
 
 <body>
+
+	<h1>Source Plugin Demos</h1>
+
+	There are 4 html files in this demo:
 	<ul>
-		<li><a href='parent.html'>parent.html</a> (loads demo iframe)</li>
-		<li><a href='parent.html?e2e'>parent.html with e2e iframe</a></li>
-		<li><a href='parent.html?e2e&initDelay=5000'>parent.html with e2e iframe and init delay</a></li>
-		<li><a href='iframe.html'>iframe.html</a> (doesn't do anything)</li>
-		<li><a href='e2e_iframe.html'>e2e_iframe.html</a> (used by Source E2E tests)</li>
+		<li><a href='demo.html'>demo.html</a> (Test scaffold that loads demo_plugin.html)</li>
+		<ul>
+			<li><a href='demo.html?initDelay=5000'>Load the demo with delayed 'init()'</a></li>
+		</ul>
+		<li><a href='backend_demo.html'>backend_demo.html</a>(Test scaffold that loads backend_demo_plugin.html</li>
+		<li><a href='demo_plugin.html'>demo_plugin.html</a> (Demo Source plugin that performs the SourceBridge handshake and
+			displays the data received from the parent window).</li>
+		<li><a href='backend_demo_plugin.html'>backend_demo_plugin.html</a> (Demo Source plugin that communicates with a
+			demo backend)</li>
 	</ul>
 </body>
 
