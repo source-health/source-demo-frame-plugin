@@ -1,6 +1,3 @@
-import { read } from 'fs'
-import { SourceBridge } from './sourcebridge/SourceBridge'
-
 /**
  * The main bundle for iframe.e2e.html, which is a simple plugin that helps us write E2E
  * tests of the plugin functionality.
@@ -8,6 +5,8 @@ import { SourceBridge } from './sourcebridge/SourceBridge'
  * Rather than hitting a demo backend, this plugin just displays the data received from the
  * parent window.
  */
+
+import { SourceBridge } from '@source-health/sourcebridge'
 
 async function replaceContent(data: Record<string, unknown>): Promise<void> {
   var contentDiv = document.querySelector('#content')

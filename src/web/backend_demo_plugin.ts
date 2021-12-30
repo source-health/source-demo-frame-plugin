@@ -1,4 +1,4 @@
-import { SourceBridge } from './sourcebridge/SourceBridge'
+import { SourceBridge } from '@source-health/sourcebridge'
 
 /**
  * The main script bundle for 'iframe.html', which is a demo plugin that runs within

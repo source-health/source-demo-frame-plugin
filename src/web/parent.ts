@@ -1,5 +1,3 @@
-import { generateRequestId } from './sourcebridge/generateRequestId'
-
 /**
  * This is a testing / demo scaffold that simulates the Source web application
  * loading an iframe plugin. It's super hacky and hard-coded, but it is just enough
@@ -7,6 +5,10 @@ import { generateRequestId } from './sourcebridge/generateRequestId'
  */
 
 const APPLICATION_ID = 'app_123' // matches the demo server's dummy config
+
+function generateRequestId(): string {
+  return Math.random().toString(32).substring(2)
+}
 
 interface Context {
   member?: string
