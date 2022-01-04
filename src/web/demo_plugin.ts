@@ -6,7 +6,7 @@
  * parent window.
  */
 
-import { SourceBridge } from '@source-health/sourcebridge'
+import { SourceBridge } from '@source-health/bridge'
 
 async function replaceContent(data: Record<string, unknown>): Promise<void> {
   var contentDiv = document.querySelector('#content')

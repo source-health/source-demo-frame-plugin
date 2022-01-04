@@ -138,6 +138,8 @@ export async function init() {
         destination.postMessage(JSON.stringify(response), iframeOrigin)
       } else if (message.type === 'complete') {
         console.log("[parent] received 'complete' from iframe1")
+      } else {
+        console.log(`[parent] unknown message type ${message.type}`)
       }
     }
   })

@@ -4,7 +4,7 @@ This is an demonstration of how to write an iframe plugin for Source Health. In
 this project we have two simple iframe html files with accompanying Typescript
 scripts:
 
-1. demo_plugin.html - this performs the SourceBridge handshake and displays the
+1. demo_plugin.html - this performs the Source Bridge handshake and displays the
    context and application token it has received from the parent window.
 2. backend_demo_plugin.html - this takes the Source application token and
    submits it to a simple demo backend API which verifies the token and returns the
@@ -47,7 +47,7 @@ Load https://source-demo-frame-plugin.glitch.me/demo.html
 4. Click on the 'Demo Plugin' chart
 5. You should see the demo iframe content, which will look like this:
    ![Demo plugin screenshot](./screenshots/demo_plugin.png)
-   This indicates that the plugin was able to successfully complete the handshake via SourceBridge, and has received the context and authentication token it needs.
+   This indicates that the plugin was able to successfully complete the handshake via Source Bridge, and has received the context and authentication token it needs.
 
 # Local development
 
