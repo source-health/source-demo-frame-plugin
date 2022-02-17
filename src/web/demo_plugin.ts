@@ -51,11 +51,12 @@ async function init() {
   const { initDelay, readyDelay } = getConfig()
   // Subscribe to updates from the parent window.
   await SourceBridge.onContextUpdate(async (context) => {
+    const token = await SourceBridge.currentToken()
     // Display the data we got from the parent window
     replaceContent({
       info: SourceBridge.info(),
       context,
-      token: await SourceBridge.currentToken(),
+      token,
     })
 
     if (readyDelay) {
@@ -65,6 +66,19 @@ async function init() {
       // Call ready() to clear the loading state for the plugin
       SourceBridge.ready()
     }, readyDelay)
+
+    setInterval(async () => {
+      if (token.token !== prevToken) {
+        console.log('[iframe] Updating content for new token')
+        replaceContent({
+          info: SourceBridge.info(),
+          context: SourceBridge.currentContext(),
+          token,
+        })
+      }
+
+    }, 1000)
+    prevToken = token.token
   })
 
   if (initDelay) {
@@ -72,8 +86,9 @@ async function init() {
   }
   setTimeout(async () => {
     // Kick off the initial handshake, which will lead to the context update callback being called.
-    const info = await SourceBridge.init()
+    await SourceBridge.init()
   }, initDelay)
 }
 
+let prevToken: string | null = null
 init()
